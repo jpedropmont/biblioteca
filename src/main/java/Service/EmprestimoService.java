@@ -1,10 +1,10 @@
 package Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import Model.AlunoModel;
 import Model.EmprestimoModel;
@@ -12,12 +12,13 @@ import Model.LivroModel;
 
 public class EmprestimoService {
 	
-	private List<EmprestimoModel> emprestimos = new ArrayList<EmprestimoModel>();
-	private EmprestimoModel emprestimo;
 	private int codigoEmprestimo = 0;
-	private Date dataDoEmprestimo;
-	private Date dataDaDevolucao;
 	
+	// Chave: Código do empréstimo - Valor: EmprestimoModel 
+	private static HashMap<Integer, EmprestimoModel> emprestimos = new HashMap<Integer, EmprestimoModel>();
+	private EmprestimoModel emprestimo;
+
+	// Chave: Código do livro - Valor: Matrícula do aluno
 	private HashMap<Integer, Integer> livrosReservados = new HashMap<Integer, Integer>();
 	
 	private AlunoService alunoService;
@@ -26,7 +27,7 @@ public class EmprestimoService {
 	private LivroService livroService;
 	private List<LivroModel> livros = livroService.getLivros();
 	
-	//matricula ao invez de nome
+	
 	public String alugarLivro (int matricula, int codigo) {
 		if (alunoExiste(matricula) && livroExiste(codigo)) {
 			if (qtdDeLivrosAlugadosPeloAluno(matricula) < 3) {
@@ -61,9 +62,21 @@ public class EmprestimoService {
 		return "Erro";	
 	}
 	
+	
+	public void renovarEmprestimo (int codigoLivro) {
+		if (!livrosReservados.containsKey(codigoLivro)) {
+			for (Entry<Integer, EmprestimoModel> emprestimo : emprestimos.entrySet()) {
+				if (emprestimo.getValue().getLivro().getCodigo() == codigoLivro) {
+					emprestimo.getValue().setDataDaDevolucao(emprestimo.getValue().getDataDaDevolucao().getDate() + 10);
+				}
+			}
+		}
+	}
+	
 	public AlunoModel aluno (int matricula) {
 		for (AlunoModel aluno : alunos) {
-			if (aluno.getMatricula() == matricula) {
+			if (
+					aluno.getMatricula() == matricula) {
 				return aluno;
 			}
 		}
@@ -99,8 +112,8 @@ public class EmprestimoService {
 	
 	public int qtdDeLivrosAlugadosPeloAluno (int matricula) {
 		int quantidadeDeLivrosAlugadosDoAluno = 0;
-		for (EmprestimoModel emprestimo : emprestimos) {
-			if (emprestimo.getAluno().getMatricula() == matricula) {
+		for (Entry<Integer, EmprestimoModel> emprestimo : emprestimos.entrySet()) {
+			if (emprestimo.getValue().getAluno().getMatricula() == matricula) {
 				quantidadeDeLivrosAlugadosDoAluno++;
 			}
 		}
@@ -108,12 +121,16 @@ public class EmprestimoService {
 	}
 	
 	public void criaEmprestimo (int matricula, int codigo) {
+		Date dataDoEmprestimo = new Date();
+		Date dataDaDevolucao = new Date(dataDoEmprestimo.getDate() + 10);
 		codigoEmprestimo += 1;
-		dataDoEmprestimo = new Date();
-		dataDaDevolucao = new Date(dataDoEmprestimo.getDay() + 10);
 		livro(codigo).setDisponivel(false);
-		emprestimo = new EmprestimoModel(aluno(matricula), livro(codigo), codigoEmprestimo);
-		emprestimos.add(emprestimo);
+		emprestimo = new EmprestimoModel(aluno(matricula), livro(codigo), codigoEmprestimo, dataDoEmprestimo, dataDaDevolucao);
+		emprestimos.put(codigoEmprestimo,emprestimo);
+	}
+
+	public static HashMap<Integer, EmprestimoModel> getEmprestimos() {
+		return emprestimos;
 	}
 
 	
