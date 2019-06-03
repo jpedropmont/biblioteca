@@ -28,9 +28,9 @@ public class LivroTest {
 	
 	@Test
 	public void editarLivro () {
-		assertEquals("Quando for editar um livro, e ele não existir, retornar uma mensagem de erro", "Livro " + livroModel.getNomeLivro() + " não existe.", livroService.editarLivro(livroModel.getNomeLivro(), livroModel.getAutor()));
+		assertEquals("Quando for editar um livro, e ele não existir, retornar uma mensagem de erro", "Livro " + livroModel.getNomeLivro() + " não existe.", livroService.editarLivro(livroModel.getCodigo() ,livroModel.getNomeLivro(), livroModel.getAutor()));
 		assertEquals("Quando for editar um livro, primeiro ele tem que ser adicionado", "Livro adicionado com sucesso.", livroService.salvarLivro(livroModel.getNomeLivro(), livroModel.getAutor()));
-		assertEquals("Quando for editar um livro, retornar uma mensagem de sucesso", "Livro " + livroModel.getNomeLivro() + " editado com sucesso.", livroService.editarLivro(livroModel.getNomeLivro(), livroModel.getAutor()));
+		assertEquals("Quando for editar um livro, retornar uma mensagem de sucesso", "Livro " + livroModel.getNomeLivro() + " editado com sucesso.", livroService.editarLivro(livroModel.getCodigo(), livroModel.getNomeLivro(), livroModel.getAutor()));
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class LivroTest {
 	@Test
 	public void atualizarNumeroDeExemplaresLivro() {
 		assertEquals("Primeiramente salvamos o livro para inativá-lo.", "Livro adicionado com sucesso.", livroService.salvarLivro(livroModel.getNomeLivro(), livroModel.getAutor()));
-		assertEquals("Quando for atualizar o numero de exemplares do livro, retornar a quantidade atualizada.", "Quantidade do livro incrementada", livroService.atualizarNumeroDeExemplaresLivro(livroModel.getNomeLivro()));
+		assertEquals("Quando for atualizar o numero de exemplares do livro para 5, retornar a quantidade atualizada.", "Quantidade de livros atualizada para "+5, livroService.atualizarNumeroDeExemplaresLivro(livroModel.getNomeLivro(), 5));
 	}
 	
 

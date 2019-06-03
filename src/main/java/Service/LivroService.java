@@ -22,12 +22,14 @@ public class LivroService {
 	
 	public String editarLivro (int codigo, String nomeLivro, String autor) {
 		for (LivroModel livro : livros) {
+			System.out.println("codigo passado "+ codigo);
 			if (livro.getCodigo() == codigo) {
 				livro.setNomeLivro(nomeLivro);
 				livro.setAutor(autor);
 				return "Livro " + livro.getNomeLivro() + " editado com sucesso.";
 			}
 		}
+		System.out.println("codigo real do livro "+ livros.get(0).getCodigo());
 		return "Livro " + nomeLivro + " não existe.";
 	}
 	
@@ -64,7 +66,7 @@ public class LivroService {
 						qtdFinal--;
 					}
 					livro.setQuantidadeDeExemplares(qtd);
-					return "Quantidade de livros atualizada.";
+					return "Quantidade de livros atualizada para "+qtd;
 				} else {
 					qtdFinal = livro.getQuantidadeDeExemplares() - qtd;
 					while(qtdFinal > 0) {
@@ -72,7 +74,7 @@ public class LivroService {
 						qtdFinal--;
 					}
 					livro.setQuantidadeDeExemplares(qtd);
-					return "Quantidade de livros atualizada.";
+					return "Quantidade de livros atualizada para "+qtd;
 				}
 			}
 		}
