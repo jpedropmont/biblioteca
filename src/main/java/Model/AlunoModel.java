@@ -1,12 +1,17 @@
 package Model;
 
-import java.util.List;
-
 public class AlunoModel {
 	
 	private String nome;
 	private int matricula;
 	private boolean ativo;
+	
+	
+	
+	
+	public AlunoModel() {
+		super();
+	}
 
 	public AlunoModel(String nome, int matricula) {
 		this.nome = nome;
@@ -37,6 +42,8 @@ public class AlunoModel {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
+
+
 	
 	
 	

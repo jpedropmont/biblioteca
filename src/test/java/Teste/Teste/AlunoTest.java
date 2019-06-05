@@ -24,20 +24,20 @@ public class AlunoTest {
 	
 	@Test
 	public void salvarAluno () {
-		assertEquals("Quando for salvo um aluno, retornar mensagem de sucesso", "Aluno adicionado com sucesso.", alunoService.salvarAluno(alunoModel.getNome(), alunoModel.getMatricula()));
+		assertEquals("Quando for salvo um aluno, retornar mensagem de sucesso", "Aluno adicionado com sucesso.", alunoService.salvarAluno(alunoModel));
 	}
 	
 	@Test
 	public void editarAluno () {
 		assertEquals("Se for editar um aluno e ele não existir, retornar mensagem de erro.", "Aluno " + alunoModel.getNome() + " não existe.", alunoService.editarAluno(alunoModel.getNome(), alunoModel.getMatricula()));
-		assertEquals("Para editar um aluno, primeiramente ele tem que existir no sistema.", "Aluno adicionado com sucesso.", alunoService.salvarAluno(alunoModel.getNome(), alunoModel.getMatricula()));
+		assertEquals("Para editar um aluno, primeiramente ele tem que existir no sistema.", "Aluno adicionado com sucesso.", alunoService.salvarAluno(alunoModel));
 		assertEquals("Quando editado um aluno, retornar mensagem de sucesso.", "Aluno " + alunoModel.getNome() + " editado com sucesso.", alunoService.editarAluno(alunoModel.getNome(), alunoModel.getMatricula()));
 	}
 	
 	@Test
 	public void inativarAluno () {
 		assertEquals("Se for inativar um aluno e ele não existir, retornar mensagem de erro.", false, alunoService.inativarAluno(alunoModel.getNome()));
-		assertEquals("Para inativar um aluno, primeiramente ele tem que existir no sistema.", "Aluno adicionado com sucesso.", alunoService.salvarAluno(alunoModel.getNome(), alunoModel.getMatricula()));
+		assertEquals("Para inativar um aluno, primeiramente ele tem que existir no sistema.", "Aluno adicionado com sucesso.", alunoService.salvarAluno(alunoModel));
 		assertTrue("Quando inativado um aluno, retornar true.", alunoService.inativarAluno(alunoModel.getNome()));
 	}
 }

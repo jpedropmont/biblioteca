@@ -1,11 +1,12 @@
 package Service;
 
 import java.util.Date;
+
 import java.util.HashMap;
 
 import Model.EmprestimoModel;
 import Model.MultaModel;
-
+@SuppressWarnings("deprecation")
 public class MultaService {
 	
 	// Chave: Código do empréstimo - Valor: EmprestimoModel 

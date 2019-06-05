@@ -1,5 +1,6 @@
 import java.util.Date;
 
+@SuppressWarnings("deprecation")
 public class Main {
 	public static void main(String[] args) {
 	   Date teste = new Date();

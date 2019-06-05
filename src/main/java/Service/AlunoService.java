@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.AlunoModel;
-import Model.LivroModel;
 
 public class AlunoService {
 	
-	List<AlunoModel> alunos = new ArrayList<AlunoModel>();
-	AlunoModel aluno;
+	public AlunoModel aluno = new AlunoModel();
+	static List<AlunoModel> alunos = new ArrayList<AlunoModel>();
 	
-	public String salvarAluno (String nomeAluno, int matricula) {
-		aluno = new AlunoModel(nomeAluno, matricula);
+	public String salvarAluno (AlunoModel aluno) {
 		alunos.add(aluno);
 		return "Aluno adicionado com sucesso.";		
 	}
@@ -38,8 +36,17 @@ public class AlunoService {
 		return false;
 	}
 	
-	public List<AlunoModel> getAlunos() {
-		return alunos;
+	public boolean alunoExiste (int matricula) {
+		for (AlunoModel aluno : alunos) {
+			//System.out.println(aluno.getMatricula() + " = " + matricula);
+			if (aluno.getMatricula() == matricula) {
+				return true;
+			}
+		}
+		return false;
 	}
+
+	
+	
 	
 }

@@ -8,6 +8,19 @@ public class LivroModel {
 	private static int quantidadeDeExemplares = 0;
 	private int codigo;
 	
+	
+	
+	public LivroModel() {
+	}
+
+	public LivroModel(String nomeLivro, String autor, boolean disponivel, int codigo) {
+		super();
+		this.nomeLivro = nomeLivro;
+		this.autor = autor;
+		this.disponivel = disponivel;
+		this.codigo = codigo;
+	}
+
 	public int getQuantidadeDeExemplares() {
 		return quantidadeDeExemplares;
 	}

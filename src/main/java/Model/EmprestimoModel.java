@@ -1,9 +1,6 @@
 package Model;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 public class EmprestimoModel {
 	
@@ -13,6 +10,12 @@ public class EmprestimoModel {
 	private Date dataDoEmprestimo;
 	private Date dataDaDevolucao;
 
+	
+	
+	public EmprestimoModel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	public EmprestimoModel(AlunoModel aluno, LivroModel livro, int codigoEmprestimo, Date dataDoEmprestimo, Date dataDaDevolucao) {
 		super();
@@ -35,6 +38,7 @@ public class EmprestimoModel {
 		return dataDaDevolucao;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setDataDaDevolucao(int i) {
 		this.dataDaDevolucao.setDate(i);
 	}

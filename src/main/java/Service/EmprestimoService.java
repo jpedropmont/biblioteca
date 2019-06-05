@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import Model.AlunoModel;
 import Model.EmprestimoModel;
 import Model.LivroModel;
 
+@SuppressWarnings("deprecation")
 public class EmprestimoService {
 	
 	private int codigoEmprestimo = 0;
@@ -21,21 +21,25 @@ public class EmprestimoService {
 	// Chave: Código do livro - Valor: Matrícula do aluno
 	private HashMap<Integer, Integer> livrosReservados = new HashMap<Integer, Integer>();
 	
-	private AlunoService alunoService;
-	private List<AlunoModel> alunos = alunoService.getAlunos();
+	private AlunoService alunoService = new AlunoService();
 	
-	private LivroService livroService;
+	private LivroService livroService = new LivroService();
 	private List<LivroModel> livros = livroService.getLivros();
 	
 	
 	public String alugarLivro (int matricula, int codigo) {
-		if (alunoExiste(matricula) && livroExiste(codigo)) {
+		if (alunoService.alunoExiste(matricula) && livroService.livroExiste(codigo)) {
 			if (qtdDeLivrosAlugadosPeloAluno(matricula) < 3) {
-				if (livrosReservados.get(codigo) != null) {
-					livrosReservados.remove(codigo);
+				if(livro(codigo).isDisponivel()) {
+					if (livrosReservados.get(codigo) != null) {
+						livrosReservados.remove(codigo);
+					}
+					criaEmprestimo(matricula, codigo);
+					return "Livro alugado com sucesso";
+				} else {
+					return "O livro não está disponível no momento";
 				}
-				criaEmprestimo(matricula, codigo);
-				return "Livro alugado com sucesso";
+				
 			} else {
 				return "Aluno já está com o limite de livros alugados";
 			}
@@ -74,7 +78,7 @@ public class EmprestimoService {
 	}
 	
 	public AlunoModel aluno (int matricula) {
-		for (AlunoModel aluno : alunos) {
+		for (AlunoModel aluno : AlunoService.alunos) {
 			if (
 					aluno.getMatricula() == matricula) {
 				return aluno;
@@ -92,23 +96,6 @@ public class EmprestimoService {
 		return null;
 	}
 	
-	public boolean alunoExiste (int matricula) {
-		for (AlunoModel aluno : alunos) {
-			if (aluno.getMatricula() == matricula) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean livroExiste (int codigo) {
-		for (LivroModel livro : livros) {
-			if (livro.getCodigo() == codigo) {
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	public int qtdDeLivrosAlugadosPeloAluno (int matricula) {
 		int quantidadeDeLivrosAlugadosDoAluno = 0;
