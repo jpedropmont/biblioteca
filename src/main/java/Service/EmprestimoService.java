@@ -27,14 +27,14 @@ public class EmprestimoService {
 	private List<LivroModel> livros = livroService.getLivros();
 	
 	
-	public String alugarLivro (int matricula, int codigo) {
-		if (alunoService.alunoExiste(matricula) && livroService.livroExiste(codigo)) {
-			if (qtdDeLivrosAlugadosPeloAluno(matricula) < 3) {
-				if(livro(codigo).isDisponivel()) {
-					if (livrosReservados.get(codigo) != null) {
-						livrosReservados.remove(codigo);
+	public String alugarLivro (AlunoModel alunoModel, LivroModel livroModel) {
+		if (alunoService.alunoExiste(alunoModel) && livroService.livroExiste(livroModel.getCodigo())) {
+			if (qtdDeLivrosAlugadosPeloAluno(alunoModel.getMatricula()) < 3) {
+				if(livro(livroModel.getCodigo()).isDisponivel()) {
+					if (livrosReservados.get(livroModel.getCodigo()) != null) {
+						livrosReservados.remove(livroModel.getCodigo());
 					}
-					criaEmprestimo(matricula, codigo);
+					criaEmprestimo(alunoModel, livroModel);
 					return "Livro alugado com sucesso";
 				} else {
 					return "O livro não está disponível no momento";
@@ -49,18 +49,18 @@ public class EmprestimoService {
 	}
 	
 	
-	public String reservarLivro (int matricula, String nomeLivro) {
+	public String reservarLivro (AlunoModel alunoModel, LivroModel livroModel) {
 		LivroModel livroASerReservado = null;
 		for (LivroModel livro : livros) {
-			if (livro.getNomeLivro() == nomeLivro) {
-				if (livro.isDisponivel()) {
+			if (livro.getNomeLivro() == livroModel.getNomeLivro()) {
+				if (livroModel.isDisponivel()) {
 					return "Livro disponível para ser alugado";
 				}
 				livroASerReservado = livro;
 			}
 		}
 		if (livroASerReservado != null) {
-			livrosReservados.put(livroASerReservado.getCodigo(), matricula);
+			livrosReservados.put(livroASerReservado.getCodigo(), alunoModel.getMatricula());
 			return "Livro reservado";
 		}
 		return "Erro";	
@@ -107,12 +107,13 @@ public class EmprestimoService {
 		return quantidadeDeLivrosAlugadosDoAluno;
 	}
 	
-	public void criaEmprestimo (int matricula, int codigo) {
+	public void criaEmprestimo (AlunoModel alunoModel, LivroModel livroModel) {
+		
 		Date dataDoEmprestimo = new Date();
 		Date dataDaDevolucao = new Date(dataDoEmprestimo.getDate() + 10);
 		codigoEmprestimo += 1;
-		livro(codigo).setDisponivel(false);
-		emprestimo = new EmprestimoModel(aluno(matricula), livro(codigo), codigoEmprestimo, dataDoEmprestimo, dataDaDevolucao);
+		livro(livroModel.getCodigo()).setDisponivel(false);
+		emprestimo = new EmprestimoModel(aluno(alunoModel.getMatricula()), livro(livroModel.getCodigo()), codigoEmprestimo, dataDoEmprestimo, dataDaDevolucao);
 		emprestimos.put(codigoEmprestimo,emprestimo);
 	}
 
