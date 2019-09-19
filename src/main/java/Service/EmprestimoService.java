@@ -79,8 +79,7 @@ public class EmprestimoService {
 	
 	public AlunoModel aluno (int matricula) {
 		for (AlunoModel aluno : AlunoService.alunos) {
-			if (
-					aluno.getMatricula() == matricula) {
+			if (aluno.getMatricula() == matricula) {
 				return aluno;
 			}
 		}
